@@ -31,14 +31,14 @@ jobs:
     env:
       SHA: ${{ inputs.ref || github.sha }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ env.SHA }}
           fetch-depth: 0 # next-version.sh reads the full history...
           fetch-tags: true # ...and the existing v* tags
           persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
 
