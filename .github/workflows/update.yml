@@ -1,0 +1,97 @@
+name: Update sources
+
+# Rebuilds every generated source (the `github` entries in sources.json) from its
+# repo's latest releases, commits whatever changed, and cuts a release.
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      only:
+        description: Only rebuild this source id (leave blank for all)
+        required: false
+        type: string
+  # Adding or changing an entry in sources.json builds it straight away.
+  push:
+    branches: [main]
+    paths:
+      - sources.json
+      - scripts/**
+
+concurrency:
+  group: update-sources
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    name: Rebuild sources
+    # The result is committed to main, so never run from another branch.
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the commit
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+      sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true # `git push` below needs the token
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # One repo failing (rate limit, renamed asset, ...) must not block the rest, so
+      # carry on here and fail the job at the very end instead.
+      - name: Rebuild
+        id: build
+        continue-on-error: true
+        run: node scripts/build.mjs ${ONLY:+--only "$ONLY"}
+        env:
+          ONLY: ${{ inputs.only }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Never commit something CI would reject.
+      - name: Validate
+        run: npm run validate
+
+      # Commits pushed with GITHUB_TOKEN don't start other workflows, so the release
+      # below is called from this workflow instead of waiting for CI.
+      - name: Commit changes
+        id: commit
+        run: |
+          git add -A sources index.json README.md
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update generated sources"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Fail if a source could not be rebuilt
+        if: ${{ steps.build.outcome == 'failure' }}
+        run: |
+          echo "::error::At least one source failed to rebuild (see the Rebuild step). Its last good file was kept."
+          exit 1
+
+  release:
+    name: Release
+    needs: update
+    # Release the sources that did update, even if another one failed.
+    if: ${{ !cancelled() && needs.update.outputs.changed == 'true' }}
+    permissions:
+      contents: write
+    uses: ./.github/workflows/release.yml
+    with:
+      ref: ${{ needs.update.outputs.sha }}

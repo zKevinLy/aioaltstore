@@ -1,0 +1,70 @@
+name: Release
+
+# Tags the next vX.Y.Z (see .github/scripts/next-version.sh) and publishes a GitHub
+# Release with every source file attached, so each one also has a stable download URL:
+#   https://github.com/zKevinLy/aio-altstore/releases/latest/download/<id>.json
+#
+# Called by CI (pushes to main) and by Update sources. Can also be run by hand.
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Commit to release. Defaults to the commit that started the caller.
+        required: false
+        type: string
+        default: ''
+  workflow_dispatch:
+
+# Two releases must not compute the same version, so they queue up one by one.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Tag & release
+    runs-on: ubuntu-latest
+    env:
+      SHA: ${{ inputs.ref || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SHA }}
+          fetch-depth: 0 # next-version.sh reads the full history...
+          fetch-tags: true # ...and the existing v* tags
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Validate what we are about to ship
+        run: npm run validate
+
+      - name: Work out the next version
+        id: version
+        run: echo "tag=$(bash .github/scripts/next-version.sh)" >> "$GITHUB_OUTPUT"
+
+      - name: Collect the files
+        run: |
+          mkdir dist
+          cp index.json sources.json dist/
+          # Generated sources only exist after the first "Update sources" run.
+          if compgen -G "sources/*.json" > /dev/null; then cp sources/*.json dist/; fi
+          (cd dist && zip -qr "../aio-altstore-${TAG}.zip" .)
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+
+      - name: Tag and create the GitHub Release
+        run: |
+          gh release create "$TAG" "aio-altstore-${TAG}.zip" dist/*.json \
+            --target "$SHA" \
+            --title "$TAG" \
+            --generate-notes
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

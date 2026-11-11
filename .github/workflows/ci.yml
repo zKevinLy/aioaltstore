@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A newer push to a PR cancels the older run. Never cancel on main: a release that is
+# cut off half way (tagged but without its files) is worse than waiting.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Test & validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # No `npm ci`: the project has no dependencies.
+      - run: npm test
+
+      # sources.json, every file in sources/, index.json and the README table.
+      - run: npm run validate
+
+  # Only for pushes to main that passed verify.
+  release:
+    name: Release
+    needs: verify
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: write # create the tag + GitHub Release
+    uses: ./.github/workflows/release.yml

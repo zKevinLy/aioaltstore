@@ -1,0 +1,39 @@
+{
+  "repository": "zKevinLy/aio-altstore",
+  "branch": "main",
+  "sources": [
+    {
+      "id": "taurus",
+      "type": "external",
+      "name": "Taurus",
+      "description": "Open-source Spotify client with built-in Premium, maintained by the Taurus project.",
+      "homepage": "https://github.com/samj-exe/taurus",
+      "url": "https://raw.githubusercontent.com/samj-exe/taurus/refs/heads/stable/altstore-source.json"
+    },
+    {
+      "id": "nuvio",
+      "type": "external",
+      "name": "Nuvio",
+      "description": "Free, open-source media app. Official iOS builds, published by the Nuvio developers.",
+      "homepage": "https://github.com/NuvioMedia/NuvioMobile",
+      "url": "https://raw.githubusercontent.com/NuvioMedia/NuvioMobile/refs/heads/cmp-rewrite/store.json"
+    },
+    {
+      "id": "ytkace",
+      "type": "github",
+      "name": "YTKACE",
+      "description": "YouTube enhancer for iOS with SponsorBlock, background playback and downloads. Generated from GitHub releases.",
+      "repo": "itzzace/ytkace",
+      "app": {
+        "name": "YTKACE",
+        "bundleIdentifier": "com.google.ios.youtube",
+        "developerName": "itzzace",
+        "subtitle": "YouTube enhancer and downloader for iOS",
+        "category": "entertainment"
+      },
+      "assets": [
+        { "match": "^YTKACE_.+_YouTube_[0-9.]+\\.ipa$", "minOSVersion": "17.0" }
+      ]
+    }
+  ]
+}

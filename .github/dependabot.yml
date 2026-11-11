@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # There are no npm dependencies, so only the workflow actions need updating.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels: [dependencies, github-actions]
+    commit-message:
+      prefix: ci
+    # Wait a week before proposing brand-new releases (supply-chain safety).
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']
