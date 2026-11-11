@@ -28,6 +28,7 @@
         "name": "YTKACE",
         "bundleIdentifier": "com.google.ios.youtube",
         "developerName": "itzzace",
+        "iconURL": "https://www.google.com/s2/favicons?sz=256&domain=youtube.com",
         "subtitle": "YouTube enhancer and downloader for iOS",
         "category": "entertainment"
       },
