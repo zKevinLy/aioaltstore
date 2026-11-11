@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { rawUrl, sourceUrl, validateManifest } from '../scripts/lib/manifest.mjs';
 
 const valid = () => ({
+  name: 'AIO Store',
   repository: 'zKevinLy/aiostore',
   branch: 'main',
   sources: [
@@ -86,7 +87,14 @@ describe('validateManifest', () => {
     const manifest = valid();
     manifest.sources[0].url = 'nope';
     manifest.sources[1].repo = 'nope';
-    assert.equal(validateManifest(manifest).length, 2);
+    delete manifest.name;
+    assert.equal(validateManifest(manifest).length, 3);
+  });
+
+  it('checks maxVersions, globally and per source', () => {
+    assert.match(problems((m) => (m.maxVersions = 0)), /maxVersions/);
+    assert.match(problems((m) => (m.sources[0].maxVersions = 'x')), /maxVersions/);
+    assert.deepEqual(problems((m) => { m.maxVersions = 3; m.sources[0].maxVersions = 5; }), '');
   });
 
   it('rejects an unknown type and an empty list', () => {

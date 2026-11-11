@@ -1,5 +1,5 @@
-// Loads and validates sources.json, the master list. Everything else (the generated
-// sources, index.json, the README table) is derived from it.
+// Loads and validates sources.json, the one master list. Everything else (mirrored and
+// generated sources, store.json, the README table) is derived from it.
 
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -9,6 +9,7 @@ const REPO = /^[\w.-]+\/[\w.-]+$/;
 const BUNDLE_ID = /^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$/;
 const OS_VERSION = /^\d+(\.\d+){0,2}$/;
 
+const isCount = (value) => Number.isInteger(value) && value >= 1 && value <= 50;
 const isString = (value) => typeof value === 'string' && value.trim() !== '';
 
 function isHttps(value) {
@@ -92,6 +93,13 @@ export function validateManifest(manifest) {
 
   if (!manifest || typeof manifest !== 'object') return ['sources.json must be an object'];
   if (!REPO.test(manifest.repository ?? '')) errors.push('repository must be "owner/name"');
+  if (!isString(manifest.name)) errors.push('name is required (shown as the store\'s name)');
+  if (manifest.maxVersions !== undefined && !isCount(manifest.maxVersions)) {
+    errors.push('maxVersions must be a whole number from 1 to 50');
+  }
+  if (manifest.iconURL !== undefined && !isHttps(manifest.iconURL)) {
+    errors.push('iconURL must be an https URL');
+  }
   if (!isString(manifest.branch)) errors.push('branch is required');
 
   if (!Array.isArray(manifest.sources) || manifest.sources.length === 0) {
@@ -110,6 +118,9 @@ export function validateManifest(manifest) {
 
     if (!isString(source.name)) errors.push(`${where}.name is required`);
     if (!isString(source.description)) errors.push(`${where}.description is required`);
+    if (source.maxVersions !== undefined && !isCount(source.maxVersions)) {
+      errors.push(`${where}.maxVersions must be a whole number from 1 to 50`);
+    }
     if (source.homepage !== undefined && !isHttps(source.homepage)) {
       errors.push(`${where}.homepage must be an https URL`);
     }

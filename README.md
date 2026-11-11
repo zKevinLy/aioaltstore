@@ -1,20 +1,35 @@
 # AIO Store
 
-A master list of [Store](https://Store.io) / [Store](https://Store.io) sources, kept in one place.
+One master list of [Store](https://Store.io) sources, merged into a single source you add once.
 
 Some sources come straight from the app's developers. For apps that only publish `.ipa` files on GitHub
 releases, this repo **generates** a source automatically and keeps it up to date.
 
 Everything is plain JSON served from this repo. No servers, no Workers.
 
+## Add everything at once
+
+In Store open **Sources → +** and paste:
+
+```
+https://raw.githubusercontent.com/zKevinLy/aiostore/main/store.json
+```
+
+[`store.json`](store.json) holds every app from every source below. It is rebuilt for you; never edit it.
+If two sources ship the same bundle ID, the one listed first in `sources.json` wins.
+
+To keep it small, each app keeps only its newest **3 versions** (a release with an iOS 16 and an iOS 17
+build counts as one). Change `maxVersions` at the top of `sources.json`, or add it to one source to
+override it for that source. The files in `sources/` keep the full history.
+
 ## Sources
 
-Copy a URL, then in Store or Store open **Sources → +** and paste it.
+Prefer to add them one by one? Copy a URL, then in Store open **Sources → +** and paste it.
 
 <!-- sources:start -->
 | Source | About | Kind | Source URL |
 | --- | --- | --- | --- |
-| [Taurus](https://github.com/samj-exe/taurus) | Open-source Spotify client with built-in Premium, maintained by the Taurus project. | External | `https://raw.githubusercontent.com/samj-exe/taurus/refs/heads/stable/Store-source.json` |
+| [Taurus](https://github.com/samj-exe/taurus) | Open-source Spotify client with built-in Premium, maintained by the Taurus project. | External | `https://raw.githubusercontent.com/samj-exe/taurus/refs/heads/stable/altstore-source.json` |
 | [Nuvio](https://github.com/NuvioMedia/NuvioMobile) | Free, open-source media app. Official iOS builds, published by the Nuvio developers. | External | `https://raw.githubusercontent.com/NuvioMedia/NuvioMobile/refs/heads/cmp-rewrite/store.json` |
 | [YTKACE](https://github.com/itzzace/ytkace) | YouTube enhancer for iOS with SponsorBlock, background playback and downloads. Generated from GitHub releases. | Generated | `https://raw.githubusercontent.com/zKevinLy/aiostore/main/sources/ytkace.json` |
 <!-- sources:end -->
@@ -25,7 +40,7 @@ Prefer a URL that only changes when a release is cut? Every release also attache
 ## Add a source
 
 Everything lives in [`sources.json`](sources.json). Add an entry, push to `main`, and the rest follows:
-the table above, `index.json` and any generated source are rebuilt for you.
+the table above, `store.json` and every source snapshot are rebuilt for you.
 
 ### An existing source (the developer already publishes one)
 
@@ -55,7 +70,7 @@ The smallest working entry takes every `.ipa` from the 10 newest releases:
 }
 ```
 
-Then run the **Update sources** workflow (or wait for the schedule) to create `sources/myapp.json`.
+Then run the **Update sources** workflow (or wait for the schedule) to create `sources/myapp.json` and add it to `store.json`.
 
 | Key                  | Where  | Meaning                                                                                  |
 | -------------------- | ------ | ---------------------------------------------------------------------------------------- |
@@ -87,7 +102,7 @@ last good file is left alone.
 | Workflow                                              | When                                         | What it does                                                                 |
 | ----------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- |
 | [CI](.github/workflows/ci.yml)                        | Every push and PR                            | Runs the tests and `validate`. On `main`, cuts a release.                    |
-| [Update sources](.github/workflows/update.yml)        | Every 6 hours, on demand, when `sources.json` changes | Regenerates every `github` source, commits changes, cuts a release.          |
+| [Update sources](.github/workflows/update.yml)        | Every 6 hours, on demand, when `sources.json` changes | Regenerates every `github` source, re-mirrors every `external` one into `sources/`, rebuilds `store.json`, commits changes, cuts a release. |
 | [Release](.github/workflows/release.yml)              | Called by the two above                      | Tags the next `vX.Y.Z` and attaches every JSON file plus a zip to a GitHub Release. |
 
 Versions follow [Conventional Commits](https://www.conventionalcommits.org): `feat:` bumps the minor,
@@ -99,8 +114,8 @@ Needs Node 22+. There are no dependencies to install.
 
 ```sh
 npm test                       # unit tests
-npm run validate               # checks sources.json, sources/, index.json and the table above
-npm run build:index            # refresh index.json and the table (offline)
+npm run validate               # checks sources.json, sources/, store.json and the table above
+npm run build:offline          # rebuild store.json and the table from sources/ (no network)
 GITHUB_TOKEN=... npm run build # regenerate everything from GitHub
 npm run build -- --only ytkace # just one source
 ```
@@ -111,9 +126,11 @@ If `main` is protected, allow `github-actions[bot]` to push to it, since *Update
 
 ## Notes
 
-- Apps listed here belong to their authors; this repo only links to and indexes their releases. Only install
+- Apps listed here belong to their authors; this repo only links to and lists their releases. Only install
   software you have the right to use.
-- Generated files are never edited by hand: change `sources.json` and rebuild.
+- `sources.json` is the only file you edit. `sources/`, `store.json` and the table above are generated.
+- `sources/<id>.json` for an `external` entry is a copy of the developer's file, kept so `store.json` still
+  builds when their URL is down.
 
 ## License
 

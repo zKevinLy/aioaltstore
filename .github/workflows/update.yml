@@ -65,7 +65,7 @@ jobs:
       - name: Commit changes
         id: commit
         run: |
-          git add -A sources index.json README.md
+          git add -A sources store.json README.md
           if git diff --cached --quiet; then
             echo "Nothing changed."
             echo "changed=false" >> "$GITHUB_OUTPUT"

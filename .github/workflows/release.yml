@@ -52,8 +52,8 @@ jobs:
       - name: Collect the files
         run: |
           mkdir dist
-          cp index.json sources.json dist/
-          # Generated sources only exist after the first "Update sources" run.
+          cp store.json sources.json dist/
+          # Source snapshots only exist after the first "Update sources" run.
           if compgen -G "sources/*.json" > /dev/null; then cp sources/*.json dist/; fi
           (cd dist && zip -qr "../aiostore-${TAG}.zip" .)
         env:

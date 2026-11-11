@@ -10,6 +10,25 @@ import { applyTable, renderTable } from '../scripts/lib/render.mjs';
 import { loadManifest } from '../scripts/lib/manifest.mjs';
 import { releases, repoInfo } from './fixtures.mjs';
 
+/** A fetch that serves one tiny external source per URL (or fails). */
+function fakeFetch({ fail = false } = {}) {
+  const calls = [];
+  const impl = async (url) => {
+    calls.push(url);
+    if (fail) return { ok: false, status: 503 };
+    const id = url.includes('taurus') ? 'taurus' : 'nuvio';
+    return {
+      ok: true,
+      json: async () => ({
+        name: id,
+        apps: [{ name: id, bundleIdentifier: `com.example.${id}`, versions: [{ version: '1.0' }] }],
+      }),
+    };
+  };
+  impl.calls = calls;
+  return impl;
+}
+
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 /** A GitHub client that answers from fixtures and counts calls. */
@@ -46,7 +65,7 @@ const read = (file) => readFile(path.join(root, file), 'utf8');
 describe('build', () => {
   it('generates a source for every github entry, and only those', async () => {
     const github = fakeGitHub();
-    const result = await build({ root, github, log: quiet });
+    const result = await build({ root, github, fetchImpl: fakeFetch(), log: quiet });
 
     assert.deepEqual(result.failed, []);
     assert.ok(result.written.includes('ytkace'));
@@ -57,47 +76,65 @@ describe('build', () => {
 
     const source = JSON.parse(await read('sources/ytkace.json'));
     assert.equal(source.apps[0].bundleIdentifier, 'com.google.ios.youtube');
-    assert.equal(source.apps[0].versions.length, 3);
+    // sources.json only has the iOS 17+ rule for YTKACE, so v1.1.7 and v1.1.6 give one entry each.
+    assert.equal(source.apps[0].versions.length, 2);
+    assert.ok(source.apps[0].versions.every((v) => v.minOSVersion === '17.0'));
   });
 
-  it('writes index.json listing every source, including external ones', async () => {
-    await build({ root, github: fakeGitHub(), log: quiet });
-    const index = JSON.parse(await read('index.json'));
+  it('mirrors external sources and merges every app into store.json', async () => {
+    const fetchImpl = fakeFetch();
+    await build({ root, github: fakeGitHub(), fetchImpl, log: quiet });
+    assert.equal(fetchImpl.calls.length, 2);
+    assert.equal(JSON.parse(await read('sources/taurus.json')).apps[0].name, 'taurus');
+
+    const store = JSON.parse(await read('store.json'));
+    assert.equal(store.name, 'AIO Store');
     assert.deepEqual(
-      index.sources.map((s) => s.id),
-      ['taurus', 'nuvio', 'ytkace'],
+      store.apps.map((app) => app.name),
+      ['taurus', 'nuvio', 'YTKACE'],
     );
     assert.equal(
-      index.sources[2].url,
-      'https://raw.githubusercontent.com/zKevinLy/aiostore/main/sources/ytkace.json',
+      store.sourceURL,
+      'https://raw.githubusercontent.com/zKevinLy/aiostore/main/store.json',
     );
+  });
+
+  it('keeps an external source\'s last good mirror when its URL fails', async () => {
+    await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
+    const before = await read('store.json');
+
+    const result = await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch({ fail: true }), log: quiet });
+    assert.deepEqual(result.failed.map((f) => f.id), ['taurus', 'nuvio']);
+    assert.equal(await read('store.json'), before);
   });
 
   it('is idempotent: a second run changes nothing', async () => {
-    await build({ root, github: fakeGitHub(), log: quiet });
-    const second = await build({ root, github: fakeGitHub(), log: quiet });
+    await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
+    const second = await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
     assert.deepEqual(second.written, []);
     assert.ok(second.unchanged.includes('ytkace'));
   });
 
-  it('--index-only never touches GitHub', async () => {
+  it('--offline never touches the network', async () => {
     const github = fakeGitHub();
-    await build({ root, github, indexOnly: true, log: quiet });
+    const fetchImpl = fakeFetch();
+    await build({ root, github, fetchImpl, offline: true, log: quiet });
     assert.deepEqual(github.calls, []);
+    assert.deepEqual(fetchImpl.calls, []);
   });
 
   it('--only limits generation to one source, and rejects an unknown id', async () => {
     const github = fakeGitHub();
-    await build({ root, github, only: 'ytkace', log: quiet });
+    await build({ root, github, fetchImpl: fakeFetch(), only: 'ytkace', log: quiet });
     assert.equal(github.calls.length, 2);
     await assert.rejects(build({ root, github, only: 'nope', log: quiet }), /No source with id/);
   });
 
   it('reports a failing source but keeps its last good file and carries on', async () => {
-    await build({ root, github: fakeGitHub(), log: quiet });
+    await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
     const before = await read('sources/ytkace.json');
 
-    const result = await build({ root, github: fakeGitHub({ fail: true }), log: quiet });
+    const result = await build({ root, github: fakeGitHub({ fail: true }), fetchImpl: fakeFetch(), log: quiet });
     assert.equal(result.failed.length, 1);
     assert.equal(result.failed[0].id, 'ytkace');
     assert.match(result.failed[0].error, /GitHub 500/);
@@ -106,13 +143,13 @@ describe('build', () => {
 
   it('refuses to write a source when no release has a matching IPA', async () => {
     const empty = { ...fakeGitHub(), getReleases: async () => [] };
-    const result = await build({ root, github: empty, log: quiet });
+    const result = await build({ root, github: empty, fetchImpl: fakeFetch(), log: quiet });
     assert.match(result.failed[0].error, /matching/);
     await assert.rejects(read('sources/ytkace.json'), { code: 'ENOENT' });
   });
 
   it('keeps the README table in sync', async () => {
-    await build({ root, github: fakeGitHub(), log: quiet });
+    await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
     const readme = await read('README.md');
     const manifest = await loadManifest(root);
     assert.ok(readme.includes(renderTable(manifest)));
@@ -132,28 +169,28 @@ describe('applyTable', () => {
 
 describe('validate', () => {
   it('passes after a build', async () => {
-    await build({ root, github: fakeGitHub(), log: quiet });
+    await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
     const { errors, warnings } = await validate(root);
     assert.deepEqual(errors, []);
     assert.deepEqual(warnings, []);
   });
 
-  it('only warns when a generated source has not been built yet', async () => {
-    await build({ root, github: fakeGitHub(), indexOnly: true, log: quiet });
+  it('only warns when a source has not been built yet', async () => {
+    await build({ root, github: fakeGitHub(), offline: true, log: quiet });
     const { errors, warnings } = await validate(root);
     assert.deepEqual(errors, []);
     assert.match(warnings.join(), /sources\/ytkace\.json doesn't exist yet/);
   });
 
-  it('catches a stale index.json', async () => {
-    await build({ root, github: fakeGitHub(), log: quiet });
-    await writeFile(path.join(root, 'index.json'), '{}\n');
+  it('catches a stale store.json', async () => {
+    await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
+    await writeFile(path.join(root, 'store.json'), '{}\n');
     const { errors } = await validate(root);
-    assert.match(errors.join(), /index\.json is out of date/);
+    assert.match(errors.join(), /store\.json is out of date/);
   });
 
   it('catches a stale README table', async () => {
-    await build({ root, github: fakeGitHub(), log: quiet });
+    await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
     const readme = (await read('README.md')).replace('YTKACE', 'Renamed');
     await writeFile(path.join(root, 'README.md'), readme);
     const { errors } = await validate(root);
@@ -161,7 +198,7 @@ describe('validate', () => {
   });
 
   it('catches a broken generated source', async () => {
-    await build({ root, github: fakeGitHub(), log: quiet });
+    await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
     const file = path.join(root, 'sources/ytkace.json');
     const json = JSON.parse(await readFile(file, 'utf8'));
     json.apps[0].versions[0].downloadURL = 'http://insecure.example/app.ipa';
@@ -173,7 +210,7 @@ describe('validate', () => {
   });
 
   it('catches a leftover file for a removed source', async () => {
-    await build({ root, github: fakeGitHub(), log: quiet });
+    await build({ root, github: fakeGitHub(), fetchImpl: fakeFetch(), log: quiet });
     await writeFile(path.join(root, 'sources/old.json'), '{}');
     const { errors } = await validate(root);
     assert.match(errors.join(), /sources\/old\.json has no matching/);

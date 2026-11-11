@@ -30,7 +30,7 @@ jobs:
       # No `npm ci`: the project has no dependencies.
       - run: npm test
 
-      # sources.json, every file in sources/, index.json and the README table.
+      # sources.json, every file in sources/, store.json and the README table.
       - run: npm run validate
 
   # Only for pushes to main that passed verify.

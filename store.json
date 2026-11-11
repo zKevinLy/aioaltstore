@@ -1,0 +1,119 @@
+{
+  "name": "AIO Store",
+  "identifier": "io.github.zkevinly.aiostore",
+  "subtitle": "Every source in one place.",
+  "website": "https://github.com/zKevinLy/aiostore",
+  "sourceURL": "https://raw.githubusercontent.com/zKevinLy/aiostore/main/store.json",
+  "apps": [
+    {
+      "name": "taurus",
+      "bundleIdentifier": "com.spotify.client",
+      "developerName": "samj.",
+      "subtitle": "taurus: the free, open-sourced alternative to chroma.pw with built-in spotify premium",
+      "localizedDescription": "Open-Sourced fork of chroma.pw with built-in Spotify Premium. The Redesigned UI requires iOS 26; the legacy UI supports iOS 16.1 and later.",
+      "iconURL": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Spotify_App_Logo.svg/960px-Spotify_App_Logo.svg.png",
+      "tintColor": "0A4B00",
+      "versions": [
+        {
+          "version": "9.10.9",
+          "date": "2026-11-08T8:00:00Z",
+          "downloadURL": "https://files.catbox.moe/9tmvx3.ipa",
+          "size": 132877139,
+          "minOSVersion": "16.1"
+        }
+      ],
+      "appPermissions": {}
+    },
+    {
+      "name": "Nuvio",
+      "bundleIdentifier": "com.nuvio.media",
+      "developerName": "NuvioMedia",
+      "subtitle": "A free, open-source media app for your phone, your desktop, and the TV you already own.",
+      "localizedDescription": "A free, open-source media app for your phone, your desktop, and the TV you already own.\n\nBring your own sources. Nuvio turns them into a library with artwork, ratings, subtitles, and your place saved on every screen.",
+      "iconURL": "https://raw.githubusercontent.com/NuvioMedia/NuvioMobile/0.4.11/iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/app-icon-1024.png",
+      "tintColor": "#1E88E5",
+      "category": "entertainment",
+      "versions": [
+        {
+          "version": "0.6.11",
+          "buildVersion": "154",
+          "date": "2026-11-10T01:28:12Z",
+          "localizedDescription": "- 9c2d0902 fix(mdblist): reuse progress and watched lists until a remap changes them @tapframe  \r\n- daa966d3 fix(auth): stay signed in when session refresh fails @tapframe  \r\n- [fix(player): center opening overlay backdrop on tall screens (#2585)](https://github.com/NuvioMedia/NuvioMobile/pull/2585) @yvngjoon  \r\n- f004557c fix(player): show mpv error details on the error screen @tapframe  \r\n- [fix(autosync): allow AutoSync without a preferred language, enable forced subs and AutoSync by default (#2578)](https://github.com/NuvioMedia/NuvioMobile/pull/2578) @skoruppa  \r\n- [feat(hero): smart horizontal framing for cropped backdrops (#2538)](https://github.com/NuvioMedia/NuvioMobile/pull/2538) @skoruppa  \r\n- [Add and update Bulgarian strings in strings.xml (#2576)](https://github.com/NuvioMedia/NuvioMobile/pull/2576) @viiktr  \r\n- [i18n: harmonize French wording with Nuvio TV (#2575)](https://github.com/NuvioMedia/NuvioMobile/pull/2575) @SK-Gits  \r\n- [fix(autosync): search further when a restored subtitle does not fit (#2537)](https://github.com/NuvioMedia/NuvioMobile/pull/2537) @skoruppa  \r\n",
+          "downloadURL": "https://github.com/NuvioMedia/NuvioMobile/releases/download/0.6.11-beta/nuvio-0.6.11-full-release.ipa",
+          "size": 69784598,
+          "sha256": "0e59c501c8d7161a3123d9527a6f2c8c520195b46ef90881827665b95b769a24",
+          "minOSVersion": "16.1"
+        },
+        {
+          "version": "0.6.10",
+          "buildVersion": "153",
+          "date": "2026-11-08T08:36:48Z",
+          "localizedDescription": "- c1dfd989 fix(player): start playback service as a normal service first (NUVIO-MOBILE-D9 NUVIO-MOBILE-9E NUVIO-MOBILE-9M NUVIO-MOBILE-PC) @tapframe  \r\n- 6ad2d9ba fix(player): cap buffer start times at the min buffer (NUVIO-MOBILE-1VH) @tapframe  \r\n- 81dc761e fix(player): guard caption setting reads (NUVIO-MOBILE-25M) @tapframe  \r\n- d534d14e fix(network): treat SSL setup errors as failed requests (NUVIO-MOBILE-254 NUVIO-MOBILE-3N) @tapframe  \r\n- 8172e682 fix(watched): copy unsynced keys before saving (NUVIO-MOBILE-260) @tapframe  \r\n- [i18n: add French translation for ratings strings (#2562)](https://github.com/NuvioMedia/NuvioMobile/pull/2562) @SK-Gits  \r\n- [i18n(el): sync the Greek locale with 0.6.9 (playback audio, downmix, ratings) (#2561)](https://github.com/NuvioMedia/NuvioMobile/pull/2561) @nosvasedis  \r\n- [i18n(he): translate party strings into Hebrew (#2557)](https://github.com/NuvioMedia/NuvioMobile/pull/2557) @haveAnIssue  \r\n- [i18n(he): translate servers strings into Hebrew (#2556)](https://github.com/NuvioMedia/NuvioMobile/pull/2556) @haveAnIssue  \r\n- [i18n(he): translate pip strings into Hebrew (#2555)](https://github.com/NuvioMedia/NuvioMobile/pull/2555) @haveAnIssue  \r\n- [i18n(he): translate autosync strings into Hebrew (#2553)](https://github.com/NuvioMedia/NuvioMobile/pull/2553) @haveAnIssue  \r\n- [i18n(he): translate mdblist strings into Hebrew (#2552)](https://github.com/NuvioMedia/NuvioMobile/pull/2552) @haveAnIssue  \r\n- [i18n(he): translate ratings strings into Hebrew (#2551)](https://github.com/NuvioMedia/NuvioMobile/pull/2551) @haveAnIssue  \r\n- [Update Japanese translation (#2559)](https://github.com/NuvioMedia/NuvioMobile/pull/2559) @Joe00011  \r\n- [i18n(vi): translate ratings strings into Vietnamese (#2550)](https://github.com/NuvioMedia/NuvioMobile/pull/2550) @blueocean2308  \r\n- 82ca7d11 fix(player): reset addon subtitles only when the source changes @tapframe  \r\n- [feat(autosync): shared engine, enable on iOS (#2535)](https://github.com/NuvioMedia/NuvioMobile/pull/2535) @skoruppa  \r\n- [fix(mdblist): remap anime episodes between addon and TMDB numbering (TV parity) (#2516)](https://github.com/NuvioMedia/NuvioMobile/pull/2516) @kernexshadow  \r\n",
+          "downloadURL": "https://github.com/NuvioMedia/NuvioMobile/releases/download/0.6.10-beta/nuvio-0.6.10-full-release.ipa",
+          "size": 69752091,
+          "sha256": "a6fcd55733485bd24bd38669abaab65c2fc102d866d083d8a4bdf4797fa91935",
+          "minOSVersion": "16.1"
+        },
+        {
+          "version": "0.6.9",
+          "buildVersion": "152",
+          "date": "2026-11-06T21:19:10Z",
+          "localizedDescription": "- ff522ec9 fix(i18n): add Tamil to iOS @tapframe  \r\n- [fix(skip-intro): drop open-ended Anime-Skip segments and prefer AniSkip (#2539)](https://github.com/NuvioMedia/NuvioMobile/pull/2539) @skoruppa  \r\n- [fix(player): leave edge swipes to the back gesture and lock tablets to landscape (#2542)](https://github.com/NuvioMedia/NuvioMobile/pull/2542) @skoruppa  \r\n- 2f9f4ae6 feat(settings): add ratings source picker @tapframe  \r\n- 9c26a7cf feat(details): add star ratings for titles and episodes @tapframe  \r\n- 1255999d feat(mdblist): sync and save ratings @tapframe  \r\n- 6982ec7d feat(simkl): save and read title ratings @tapframe  \r\n- 32298713 feat(tracking): add rating source setting @tapframe  \r\n- d816059e feat(streams): make chips see-through over backdrops @tapframe  \r\n- 9877adfc feat(details): fade tablet artwork into the cinematic backdrop @tapframe  \r\n- 5cf73ccc feat(details): show the cinematic backdrop behind the floating header @tapframe  \r\n- f6ac2840 feat(details): make buttons and chips see-through over backdrops @tapframe  \r\n- [i18n: add French strings for audio downmix, amplification and delay (#2532)](https://github.com/NuvioMedia/NuvioMobile/pull/2532) @SK-Gits  \r\n- [fix(player): allow playback during calls with ExoPlayer (#2531)](https://github.com/NuvioMedia/NuvioMobile/pull/2531) @sap6  \r\n- [i18n(vi): update translations for strings.xml and autosync_toast_strings.xml (#2530)](https://github.com/NuvioMedia/NuvioMobile/pull/2530) @blueocean2308  \r\n- [fix(i18n): update Bengali (বাংলা) localization and sync missing strings (#2529)](https://github.com/NuvioMedia/NuvioMobile/pull/2529) @TanvirSdq  \r\n- [feat(i18n): add Tamil language support and UI localization (#2528)](https://github.com/NuvioMedia/NuvioMobile/pull/2528) @vijay3695  \r\n- [Fix Arabic page-title wrapping in shared screen header (#2063)](https://github.com/NuvioMedia/NuvioMobile/pull/2063) @i7xre  \r\n",
+          "downloadURL": "https://github.com/NuvioMedia/NuvioMobile/releases/download/0.6.9-beta/nuvio-0.6.9-full-release.ipa",
+          "size": 69322992,
+          "sha256": "a956c8f2041530bd7a80b14b5c9edd5a45a430c74da088d971d5117d2d691e27",
+          "minOSVersion": "16.1"
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSLocalNetworkUsageDescription": "Nuvio connects to media servers on your local network."
+        }
+      }
+    },
+    {
+      "name": "YTKACE",
+      "bundleIdentifier": "com.google.ios.youtube",
+      "developerName": "itzzace",
+      "subtitle": "YouTube enhancer and downloader for iOS",
+      "localizedDescription": "YTKACE is a free, open-source YouTube enhancer and downloader for iOS with SponsorBlock, background playback, player controls, and interface customization including liquid glass.",
+      "iconURL": "https://www.google.com/s2/favicons?sz=256&domain=youtube.com",
+      "category": "entertainment",
+      "versions": [
+        {
+          "version": "1.1.7",
+          "date": "2026-11-10T21:54:48Z",
+          "localizedDescription": "by @itzzace0\n\n1,000 stars 🎉\nThanks for 1k stars! To celebrate, FlareStore is sponsoring a giveaway of 5 certificates in the new YTKACE Telegram channel: https://t.me/ytkace\n\nWhat's new:\n• Updated to YouTube 21.45.4\n• Button Layout: drag the player buttons into YouTube's top row, the row under it, or next to the fullscreen button\n• Added a Quality Button that shows the current quality\n• Added Auto Fullscreen and Exit Fullscreen at End\n• Added Swipe to Seek\n• Added Previous/Next Skip\n• Added Keep Playing, which stops the \"Continue watching?\" pause\n• Added a Playlist tab\n• Added a default video quality and audio language for downloads\n• Added Remove Live Videos from Home\n• Added an Auto-Scroll Delay for Shorts\n• Added a minimum segment length to SponsorBlock\n• Added iPhone Duo layouts\n\nFixed:\n• Videos missing from Home on some accounts\n• Lock screen scrubbing and skip not working for downloads\n• Tabs not switching when Home is hidden\n• Live streams counted as finished in the queue\n• Auto-scroll skipping Shorts before they end\n• Show Status Bar in Fullscreen not working\n• Invisible back button with OLED in light mode\n• HLS Streams not falling back when a video fails\n• Tab icons and labels on vertical tab bars\n\nYouTube 21.45.4 requires iOS 17, so there are two IPAs:\n• `YTKACE_1.1.7_YouTube_21.45.4.ipa` for iOS 17 and newer\n• `YTKACE_1.1.7_YouTube_iOS16_21.33.6.ipa` for iOS 16",
+          "downloadURL": "https://github.com/itzzace/ytkace/releases/download/v1.1.7/YTKACE_1.1.7_YouTube_21.45.4.ipa",
+          "size": 140303052,
+          "sha256": "c29cc9b35fd97a34e1f9f42e244ee12bf85fa67984c9aa3e926a73fe7baa91bb",
+          "minOSVersion": "17.0"
+        },
+        {
+          "version": "1.1.5",
+          "date": "2026-11-03T22:13:29Z",
+          "localizedDescription": "by @itzzace0\n\nWhat's new:\n• Updated to YouTube 21.44.4\n• Normal Home Layout now brings back the old Home with topic chips\n• Added Turn Off Haptics\n• Added Open Links Directly\n• Added Remove Autoplay Prompt\n• Added Remove More Videos\n• Added an option to remove Listen with YouTube Music from the ⋯ menu\n• Added a rotate button to the downloads player\n• Captions can now be turned on in Always Off mode\n\nFixed:\n• Tab settings ignored on YouTube's glass tab bar\n• Glass tab bar with icon-only tabs\n• Startup tab when Home is hidden\n• Tab labels and icons on YouTube's icon-only tab bar\n• Subscriptions tab missing from the bottom bar, and its icon\n• Remove Channel Watermark not working\n• Remove End Screen not working\n• Keep Progress Bar Visible not working\n\nYouTube 21.44.4 requires iOS 17, so there are two IPAs:\n• `YTKACE_1.1.5_YouTube_21.44.4.ipa` for iOS 17 and newer\n• `YTKACE_1.1.5_YouTube_iOS16_21.33.6.ipa` for iOS 16",
+          "downloadURL": "https://github.com/itzzace/ytkace/releases/download/v1.1.5/YTKACE_1.1.5_YouTube_21.44.4.ipa",
+          "size": 139496330,
+          "sha256": "1236ee0969c4a119e8269e1b211373ff4fdffa68799198c962f9be288dbd6d7e",
+          "minOSVersion": "17.0"
+        },
+        {
+          "version": "1.1.4",
+          "date": "2026-10-25T17:33:06Z",
+          "localizedDescription": "by @itzzace0\n\nWhat's new:\n• Updated to YouTube 21.42.4\n• Added a SponsorBlock button to the player to whitelist channels, vote on segments and submit new ones\n• Added Report AI Channels to report channels to AiSList from the ⋯ menu\n• Added Clean Copied Links to remove tracking like si= from links you copy or share\n• Added options to remove items from the ⋯ menu\n• Added Tab Bar options for Liquid Glass: Default, YTKACE, YouTube or Off\n• Added Keep Shorts in Home, Search and on Channels\n\nFixed:\n• Remove Previous/Next not working in playlists\n• Blank space left when fullscreen actions are hidden\n• Remove Mixes missing some mixes\n\nYouTube 21.42.4 requires iOS 17, so there are two IPAs:\n• `YTKACE_1.1.4_YouTube_21.42.4.ipa` for iOS 17 and newer\n• `YTKACE_1.1.4_YouTube_iOS16_21.33.6.ipa` for iOS 16",
+          "downloadURL": "https://github.com/itzzace/ytkace/releases/download/v1.1.4/YTKACE_1.1.4_YouTube_21.42.4.ipa",
+          "size": 138006169,
+          "sha256": "a7bd1ab52d34254df33b5f2479b7969bfcd538fc0bf10fb61a0f8cf13f83180f",
+          "minOSVersion": "17.0"
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {}
+      }
+    }
+  ],
+  "news": []
+}

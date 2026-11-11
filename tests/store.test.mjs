@@ -6,7 +6,7 @@ import {
   compareVersions,
   sourceIdentifier,
   versionFromTag,
-} from '../scripts/lib/Store.mjs';
+} from '../scripts/lib/store.mjs';
 import { manifest, release, releases, repoInfo, sha, v117, ytkaceSource } from './fixtures.mjs';
 
 describe('versionFromTag', () => {

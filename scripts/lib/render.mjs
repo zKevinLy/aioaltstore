@@ -1,5 +1,4 @@
-// Everything derived from sources.json that isn't an Store source: index.json and the
-// table in the README. Pure functions, so `validate` can check the files are up to date.
+// The README table, derived from sources.json. Pure functions, so `validate` can check the files are up to date.
 
 import { sourceUrl } from './manifest.mjs';
 
@@ -10,22 +9,6 @@ export const serialize = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
 const homepageOf = (source) =>
   source.homepage ?? (source.type === 'github' ? `https://github.com/${source.repo}` : undefined);
-
-/** index.json: every source with its final URL, for scripts and the website to read. */
-export function renderIndex(manifest) {
-  return {
-    name: 'AIO Store',
-    repository: manifest.repository,
-    sources: manifest.sources.map((source) => ({
-      id: source.id,
-      name: source.name,
-      description: source.description,
-      type: source.type,
-      url: sourceUrl(manifest, source),
-      homepage: homepageOf(source),
-    })),
-  };
-}
 
 const cell = (text) => text.replace(/\|/g, '\\|').replace(/\s+/g, ' ').trim();
 
