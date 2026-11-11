@@ -9,7 +9,7 @@ export function createGitHub({ token, fetchImpl = fetch, apiBase = API } = {}) {
       headers: {
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'aio-altstore',
+        'User-Agent': 'aiostore',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     });

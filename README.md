@@ -1,6 +1,6 @@
-# AIO AltStore
+# AIO Store
 
-A master list of [AltStore](https://altstore.io) / [SideStore](https://sidestore.io) sources, kept in one place.
+A master list of [Store](https://Store.io) / [Store](https://Store.io) sources, kept in one place.
 
 Some sources come straight from the app's developers. For apps that only publish `.ipa` files on GitHub
 releases, this repo **generates** a source automatically and keeps it up to date.
@@ -9,18 +9,18 @@ Everything is plain JSON served from this repo. No servers, no Workers.
 
 ## Sources
 
-Copy a URL, then in AltStore or SideStore open **Sources → +** and paste it.
+Copy a URL, then in Store or Store open **Sources → +** and paste it.
 
 <!-- sources:start -->
 | Source | About | Kind | Source URL |
 | --- | --- | --- | --- |
-| [Taurus](https://github.com/samj-exe/taurus) | Open-source Spotify client with built-in Premium, maintained by the Taurus project. | External | `https://raw.githubusercontent.com/samj-exe/taurus/refs/heads/stable/altstore-source.json` |
+| [Taurus](https://github.com/samj-exe/taurus) | Open-source Spotify client with built-in Premium, maintained by the Taurus project. | External | `https://raw.githubusercontent.com/samj-exe/taurus/refs/heads/stable/Store-source.json` |
 | [Nuvio](https://github.com/NuvioMedia/NuvioMobile) | Free, open-source media app. Official iOS builds, published by the Nuvio developers. | External | `https://raw.githubusercontent.com/NuvioMedia/NuvioMobile/refs/heads/cmp-rewrite/store.json` |
-| [YTKACE](https://github.com/itzzace/ytkace) | YouTube enhancer for iOS with SponsorBlock, background playback and downloads. Generated from GitHub releases. | Generated | `https://raw.githubusercontent.com/zKevinLy/aio-altstore/main/sources/ytkace.json` |
+| [YTKACE](https://github.com/itzzace/ytkace) | YouTube enhancer for iOS with SponsorBlock, background playback and downloads. Generated from GitHub releases. | Generated | `https://raw.githubusercontent.com/zKevinLy/aiostore/main/sources/ytkace.json` |
 <!-- sources:end -->
 
 Prefer a URL that only changes when a release is cut? Every release also attaches the files, e.g.
-`https://github.com/zKevinLy/aio-altstore/releases/latest/download/ytkace.json`.
+`https://github.com/zKevinLy/aiostore/releases/latest/download/ytkace.json`.
 
 ## Add a source
 
@@ -59,7 +59,7 @@ Then run the **Update sources** workflow (or wait for the schedule) to create `s
 
 | Key                  | Where  | Meaning                                                                                  |
 | -------------------- | ------ | ---------------------------------------------------------------------------------------- |
-| `app.bundleIdentifier` | `app`  | **Required, and must match the IPA's real bundle ID** or AltStore will refuse to update. |
+| `app.bundleIdentifier` | `app`  | **Required, and must match the IPA's real bundle ID** or Store will refuse to update. |
 | `app.developerName`  | `app`  | Defaults to the repo owner.                                                              |
 | `app.iconURL`        | `app`  | Defaults to the repo owner's GitHub avatar.                                              |
 | `app.subtitle`, `app.localizedDescription`, `app.tintColor`, `app.category`, `app.screenshots` | `app` | Optional. Description defaults to the repo's description. |
@@ -69,7 +69,7 @@ Then run the **Update sources** workflow (or wait for the schedule) to create `s
 | `includePrereleases` | entry  | Default `false`.                                                                         |
 
 A release that ships several IPAs gets one version entry per IPA. [YTKACE](https://github.com/itzzace/ytkace)
-publishes an iOS 16 build and an iOS 17+ build side by side, so it uses two rules and AltStore picks the newest
+publishes an iOS 16 build and an iOS 17+ build side by side, so it uses two rules and Store picks the newest
 one each device can run:
 
 ```json

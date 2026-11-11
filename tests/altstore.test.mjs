@@ -6,7 +6,7 @@ import {
   compareVersions,
   sourceIdentifier,
   versionFromTag,
-} from '../scripts/lib/altstore.mjs';
+} from '../scripts/lib/Store.mjs';
 import { manifest, release, releases, repoInfo, sha, v117, ytkaceSource } from './fixtures.mjs';
 
 describe('versionFromTag', () => {
@@ -137,7 +137,7 @@ describe('buildSource', () => {
 
   it('names the source and gives it a stable identifier', () => {
     assert.equal(source.name, 'YTKACE');
-    assert.equal(source.identifier, 'io.github.zkevinly.aio-altstore.ytkace');
+    assert.equal(source.identifier, 'io.github.zkevinly.aiostore.ytkace');
     assert.equal(sourceIdentifier(manifest, ytkaceSource), source.identifier);
   });
 

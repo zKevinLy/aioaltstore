@@ -1,4 +1,4 @@
-// Turns a GitHub repo's releases into an AltStore / SideStore source (the v2 format,
+// Turns a GitHub repo's releases into an Store / Store source (the v2 format,
 // with a `versions` array). Pure functions: no network, no file access.
 
 export const DEFAULT_TAG_PATTERN = '^[vV]?(.+)$';
@@ -41,7 +41,7 @@ function ruleFor(assetName, rules) {
 
 /**
  * One version entry per matching IPA. A release that ships several IPAs (say an iOS 16
- * build and an iOS 17+ build) gives several entries; AltStore picks the newest one the
+ * build and an iOS 17+ build) gives several entries; Store picks the newest one the
  * device's iOS can run, using `minOSVersion`.
  */
 export function buildVersions(releases, source) {
@@ -92,14 +92,14 @@ export function buildVersions(releases, source) {
   return versions;
 }
 
-/** The reverse-DNS id of a generated source, e.g. io.github.zkevinly.aio-altstore.ytkace. */
+/** The reverse-DNS id of a generated source, e.g. io.github.zkevinly.aiostore.ytkace. */
 export function sourceIdentifier(manifest, source) {
   const [owner, name] = manifest.repository.toLowerCase().split('/');
   return `io.github.${owner}.${name}.${source.id}`;
 }
 
 /**
- * The whole AltStore source for one `github` entry of sources.json.
+ * The whole Store source for one `github` entry of sources.json.
  * `repoInfo` is GET /repos/{repo}; `releases` is GET /repos/{repo}/releases.
  */
 export function buildSource(manifest, source, repoInfo, releases) {

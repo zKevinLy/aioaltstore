@@ -1,6 +1,6 @@
 // Checks everything committed to the repo, offline. CI runs this on every push.
 //   - sources.json is valid
-//   - each generated source in sources/ is a well-formed AltStore source
+//   - each generated source in sources/ is a well-formed Store source
 //   - index.json and the README table match sources.json (else: npm run build:index)
 //   - no leftover files for sources that were removed
 //
@@ -23,8 +23,8 @@ const isHttps = (value) => {
   }
 };
 
-/** Problems with one AltStore source object (empty = fine). */
-export function checkAltStoreSource(json, source) {
+/** Problems with one Store source object (empty = fine). */
+export function checkStoreSource(json, source) {
   const errors = [];
   const need = (ok, message) => ok || errors.push(message);
 
@@ -75,7 +75,7 @@ export async function validate(root = ROOT) {
       continue;
     }
     try {
-      for (const problem of checkAltStoreSource(JSON.parse(text), source)) {
+      for (const problem of checkStoreSource(JSON.parse(text), source)) {
         errors.push(`${file}: ${problem}`);
       }
     } catch (error) {

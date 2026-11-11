@@ -1,7 +1,7 @@
 // Shapes copied from GitHub's REST API (GET /repos/{repo}/releases). Sizes and digests are
 // made up; the IPA file names and URLs follow the real itzzace/ytkace release v1.1.7.
 
-export const manifest = { repository: 'zKevinLy/aio-altstore', branch: 'main' };
+export const manifest = { repository: 'zKevinLy/aiostore', branch: 'main' };
 
 export const ytkaceSource = {
   id: 'ytkace',

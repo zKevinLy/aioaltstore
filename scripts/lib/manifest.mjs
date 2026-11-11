@@ -147,6 +147,6 @@ export async function loadManifest(root) {
 export const rawUrl = (manifest, file) =>
   `https://raw.githubusercontent.com/${manifest.repository}/${manifest.branch}/${file}`;
 
-/** The URL people add to AltStore: the source's own for external ones, ours for generated ones. */
+/** The URL people add to Store: the source's own for external ones, ours for generated ones. */
 export const sourceUrl = (manifest, source) =>
   source.type === 'external' ? source.url : rawUrl(manifest, `sources/${source.id}.json`);

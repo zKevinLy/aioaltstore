@@ -34,7 +34,7 @@ let root;
 const quiet = () => {};
 
 beforeEach(async () => {
-  root = await mkdtemp(path.join(os.tmpdir(), 'aio-altstore-'));
+  root = await mkdtemp(path.join(os.tmpdir(), 'aiostore-'));
   await copyFile(path.join(REPO_ROOT, 'sources.json'), path.join(root, 'sources.json'));
   await copyFile(path.join(REPO_ROOT, 'README.md'), path.join(root, 'README.md'));
 });
@@ -69,7 +69,7 @@ describe('build', () => {
     );
     assert.equal(
       index.sources[2].url,
-      'https://raw.githubusercontent.com/zKevinLy/aio-altstore/main/sources/ytkace.json',
+      'https://raw.githubusercontent.com/zKevinLy/aiostore/main/sources/ytkace.json',
     );
   });
 

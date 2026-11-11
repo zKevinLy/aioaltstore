@@ -20,7 +20,7 @@ describe('createGitHub', () => {
     assert.equal(seen[0].url, 'https://api.github.com/repos/itzzace/ytkace');
     assert.equal(seen[1].url, 'https://api.github.com/repos/itzzace/ytkace/releases?per_page=100');
     assert.equal(seen[0].headers.Accept, 'application/vnd.github+json');
-    assert.equal(seen[0].headers['User-Agent'], 'aio-altstore');
+    assert.equal(seen[0].headers['User-Agent'], 'aiostore');
   });
 
   it('sends the token only when there is one', async () => {

@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { rawUrl, sourceUrl, validateManifest } from '../scripts/lib/manifest.mjs';
 
 const valid = () => ({
-  repository: 'zKevinLy/aio-altstore',
+  repository: 'zKevinLy/aiostore',
   branch: 'main',
   sources: [
     {
@@ -101,7 +101,7 @@ describe('urls', () => {
   it('builds raw URLs for this repo', () => {
     assert.equal(
       rawUrl(manifest, 'sources/gh.json'),
-      'https://raw.githubusercontent.com/zKevinLy/aio-altstore/main/sources/gh.json',
+      'https://raw.githubusercontent.com/zKevinLy/aiostore/main/sources/gh.json',
     );
   });
 

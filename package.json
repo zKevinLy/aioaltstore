@@ -1,12 +1,12 @@
 {
-  "name": "aio-altstore",
+  "name": "aiostore",
   "version": "0.0.0",
   "private": true,
-  "description": "A master list of AltStore / SideStore sources, plus a generator that builds one from GitHub releases.",
+  "description": "A master list of Store / Store sources, plus a generator that builds one from GitHub releases.",
   "type": "module",
   "license": "MIT",
   "author": "Kevin Ly",
-  "repository": "github:zKevinLy/aio-altstore",
+  "repository": "github:zKevinLy/aiostore",
   "engines": {
     "node": ">=22"
   },

@@ -1,5 +1,5 @@
 // Builds everything generated from sources.json:
-//   sources/<id>.json   an AltStore source for every `github` entry (from its releases)
+//   sources/<id>.json   an Store source for every `github` entry (from its releases)
 //   index.json          every source and its URL
 //   README.md           the table between the sources markers
 //
@@ -12,7 +12,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildSource } from './lib/altstore.mjs';
+import { buildSource } from './lib/Store.mjs';
 import { createGitHub } from './lib/github.mjs';
 import { loadManifest } from './lib/manifest.mjs';
 import { applyTable, renderIndex, renderTable, serialize } from './lib/render.mjs';

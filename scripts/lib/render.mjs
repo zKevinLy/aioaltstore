@@ -1,4 +1,4 @@
-// Everything derived from sources.json that isn't an AltStore source: index.json and the
+// Everything derived from sources.json that isn't an Store source: index.json and the
 // table in the README. Pure functions, so `validate` can check the files are up to date.
 
 import { sourceUrl } from './manifest.mjs';
@@ -14,7 +14,7 @@ const homepageOf = (source) =>
 /** index.json: every source with its final URL, for scripts and the website to read. */
 export function renderIndex(manifest) {
   return {
-    name: 'AIO AltStore',
+    name: 'AIO Store',
     repository: manifest.repository,
     sources: manifest.sources.map((source) => ({
       id: source.id,
