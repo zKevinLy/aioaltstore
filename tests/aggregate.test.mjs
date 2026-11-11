@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildStore, limitVersions, storeIdentifier } from '../scripts/lib/aggregate.mjs';
 
-const manifest = { name: 'AIO Store', repository: 'zKevinLy/aiostore', branch: 'main' };
+const manifest = { name: 'AIOStore', repository: 'zKevinLy/aiostore', branch: 'main' };
 const snap = (id, apps, news) => ({ source: { id }, json: { apps, news } });
 const app = (bundleIdentifier, name = bundleIdentifier) => ({ name, bundleIdentifier, versions: [] });
 
@@ -13,7 +13,7 @@ describe('buildStore', () => {
       snap('b', [app('com.b1'), app('com.b2')]),
     ]);
     assert.deepEqual(store.apps.map((x) => x.bundleIdentifier), ['com.a', 'com.b1', 'com.b2']);
-    assert.equal(store.name, 'AIO Store');
+    assert.equal(store.name, 'AIOStore');
     assert.equal(store.identifier, storeIdentifier(manifest));
     assert.deepEqual(conflicts, []);
   });

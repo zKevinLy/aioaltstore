@@ -88,7 +88,7 @@ describe('build', () => {
     assert.equal(JSON.parse(await read('sources/taurus.json')).apps[0].name, 'taurus');
 
     const store = JSON.parse(await read('store.json'));
-    assert.equal(store.name, 'AIO Store');
+    assert.equal(store.name, 'AIOStore');
     assert.deepEqual(
       store.apps.map((app) => app.name),
       ['taurus', 'nuvio', 'YTKACE'],

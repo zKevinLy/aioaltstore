@@ -1,4 +1,4 @@
-# AIO Store
+# AIOStore
 
 One master list of [Store](https://Store.io) sources, merged into a single source you add once.
 

@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { rawUrl, sourceUrl, validateManifest } from '../scripts/lib/manifest.mjs';
 
 const valid = () => ({
-  name: 'AIO Store',
+  name: 'AIOStore',
   repository: 'zKevinLy/aiostore',
   branch: 'main',
   sources: [
